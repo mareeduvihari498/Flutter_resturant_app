@@ -48,47 +48,6 @@ class _OrderState extends State<Order> {
   }
 }
 
-/*class Order extends StatelessWidget {
-  const Order({Key? key, required this.todos}) : super(key: key);
- //final List<To> todos;
-  final List<String> todos;
-  void initState(){
-    super.initState();
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(appBar: AppBar(
-      title: const Text('Dwaraka Bawarchi'),
-    ),
-    body:ElevatedButton(
-      child: Text('click'),
-      onPressed: (){
-        //print(p);
-      },
-    ),
-    /*ListView.builder(itemBuilder:(BuildContext context,int index){
-      return ListTile(
-        title: Text(s[index]),
-        trailing: Text('${p[index]}'),
-      );
-    } ),*/
-
-    
-
-    ); 
-    
-  }
-}
-
-class To{
-  final String name;
-  final double price;
-  final int count;
-  To(this.count,this.name,this.price);
-}*/
 
 Text buildText(double x,int y){
 
