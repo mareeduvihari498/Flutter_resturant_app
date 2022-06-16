@@ -6,6 +6,7 @@ create a seperte admin screen
 
 */
 
+import 'package:bawarchi/login.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 //import 'package:collection/collection.dart';
@@ -52,9 +53,20 @@ class _MyAppState extends State<MyApp> {
 
   
   Widget build(BuildContext context){
-    return  const MaterialApp(
+    return   MaterialApp(
       
-        home:Signup(),
+        home:Scaffold(
+          body: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(child:Signup()),
+              const SizedBox(
+                  width: 20,
+                ),
+              Expanded(child:Login())
+            ],
+          ),
+        ),
         /*routes:<String, WidgetBuilder>{
           'order': (BuildContext context) =>   const Order(s: '',),
           'schedule' : (BuildContext context) =>  new Item(),

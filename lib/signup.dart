@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
@@ -12,6 +14,27 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  Future <void> Verification( ) async{
+     FirebaseAuth _auth = FirebaseAuth.instance;
+                 await  _auth.verifyPhoneNumber(
+                  phoneNumber: '+1'+_controller.text  , 
+                 verificationCompleted: (PhoneAuthCredential credential ) async{
+                  UserCredential result = await _auth.signInWithCredential(credential);
+                  print(result);
+
+
+                 }, 
+                 verificationFailed: (FirebaseAuthException exception) async{
+                  print(exception);
+
+                 },
+                  codeSent:(String verificationId, int? forceResendingToken ) async{
+
+                 } , 
+                 codeAutoRetrievalTimeout: (String verificationId){}); 
+    
+  }
+
   @override
   bool otp =true;
   var signup = 'Get OTP';
@@ -19,12 +42,7 @@ class _SignupState extends State<Signup> {
   final _controller= TextEditingController();
   final _pcontroller = TextEditingController();
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title:const Text('Dwaraka Bawarch'),
-        ),
-        body: Center(
+    return Center(
       child:Card(
         margin: const EdgeInsetsDirectional.all(8),
         child: SingleChildScrollView(
@@ -56,7 +74,6 @@ class _SignupState extends State<Signup> {
                   TextFormField(
                     enabled: otp,
                     keyboardType: TextInputType.emailAddress,
-                    controller: _controller,
                     decoration: const InputDecoration(
                       labelText: 'Email'
                     ),
@@ -73,6 +90,7 @@ class _SignupState extends State<Signup> {
                     TextFormField(
                       enabled: otp,
                       key: const ValueKey('number'),
+                      controller: _controller,
                     inputFormatters: [
                       MaskedInputFormatter('### ### ####')
                     ],
@@ -156,9 +174,206 @@ class _SignupState extends State<Signup> {
                  Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
-              onPressed:() {
+              onPressed:() async{
                 if(otp){if(_formkey.currentState!.validate()){
+                  Verification();
+                 
+                  setState(() {
+                    otp=false;
+                    signup='Sign Up';
+                  });
+
+                }
+                
+
+              }
+              else{
+                 Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: ((context) {
+                    return  Item();
+                  }))
+                  );
+                 
+              }
+              
+              },
+              
+              
+               /*() {
+
+                // Validate will return true if the form is valid, or false if
+                // the form is invalid.
+                if (_formkey.currentState!.validate()) {
+                  // Process data.
+                }
+              },*/
+              child:  Text(signup),
+            ),
+          ),
+         
                   
+                ],
+              ), 
+            ) ,
+            
+          ),
+          
+           ),
+      ) ,
+      
+    );
+    
+    
+  }
+    
+}
+    
+    
+    
+    
+    
+    
+    /*MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title:const Text('Dwaraka Bawarch'),
+        ),
+        body: Center(
+      child:Card(
+        margin: const EdgeInsetsDirectional.all(8),
+        child: SingleChildScrollView(
+          child:Padding(
+            padding: const EdgeInsetsDirectional.all(16),
+            child:Form(
+              key: _formkey,
+              child:Column(
+                  mainAxisSize: MainAxisSize.min,
+                  
+                children: <Widget>[
+                  TextFormField(
+                    enabled: otp,
+                    inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(r'[a-z]')),
+                        ],
+                    keyboardType: TextInputType.name,
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                    
+                    ),
+                    validator: (value){
+                      if(value!.isEmpty){
+                        return 'Name can\'t be empty';
+                      }
+                        return null;
+                    },
+                    ),
+                  TextFormField(
+                    enabled: otp,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      labelText: 'Email'
+                    ),
+                    validator: (value){
+                      if(value!.isEmpty){
+                        return 'Email can\'t be empty';
+                      }
+                      else if(!value.contains('@') || !value.endsWith('.com')){
+                        return 'enter valid Email';
+                      }
+                      return null;
+                    },
+                  ),
+                    TextFormField(
+                      enabled: otp,
+                      key: const ValueKey('number'),
+                      controller: _controller,
+                    inputFormatters: [
+                      MaskedInputFormatter('### ### ####')
+                    ],
+                    keyboardType: TextInputType.phone,
+                    decoration: const InputDecoration(
+                      labelText: 'Phone Number',
+                    
+                    ),
+                    
+                    
+                    validator: (value){
+                      if(value==null){
+                        return 'phone number can\'t be empty';
+                      }
+                      /*if(value.length!=10 ){
+                        return 'Phone Number must be 10 digits';
+                      }*/
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    enabled: otp,
+                    keyboardType: TextInputType.phone,
+                    decoration: const InputDecoration(
+                      labelText: 'Card Number',
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      CreditCardNumberInputFormatter(onCardSystemSelected:  (CardSystemData? cardSystemData) {
+            print(cardSystemData?.system);
+            
+        }),
+    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+  ],
+
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(child:TextFormField(
+                        enabled: otp,
+                        inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        ],
+                    decoration: const InputDecoration(
+                      labelText: 'Expiration Date'
+                    ),
+                  ),),
+                   const SizedBox(
+                  width: 20,
+                ),
+                  Expanded(child:TextFormField(
+                    enabled: otp,
+                    inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        ],
+                    decoration: const InputDecoration(
+                      labelText: 'CVV'
+
+                    ),
+                    obscureText: true,
+                  ),),
+                   
+
+                    ],
+                  ),
+                  TextFormField(
+                    enabled: otp,
+                    inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.allow(RegExp(r'[a-z]')),
+                        ],
+                    decoration: const InputDecoration(
+                      labelText: 'Name on Card'
+                    ),
+                  ),
+                  TextFormField(
+                    enabled: !otp,
+                    decoration: const InputDecoration(
+                      labelText: 'Enter OTP',
+                    ),
+                  ),
+                 Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: ElevatedButton(
+              onPressed:() async{
+                if(otp){if(_formkey.currentState!.validate()){
+                  Verification();
+                 
                   setState(() {
                     otp=false;
                     signup='Sign Up';
@@ -211,4 +426,4 @@ class _SignupState extends State<Signup> {
     );
     
   }
-}
+}*/
