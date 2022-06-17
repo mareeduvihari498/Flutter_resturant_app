@@ -5,7 +5,7 @@ Todo List
 Create a streambuilder for reading the changes as it doesn't reaload while the app is running in the background
 Snackbar to say that prices have been changes
 Push notification before a day when the changes have been made 
-
+add a signout function
 */
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -55,6 +55,16 @@ setState(() {});
    
     
   }
+  int totalitems(){
+    var totalitems=0;
+    for (var element in counter) {
+      if(element!=0){
+        totalitems+=1;
+      }
+      
+    }
+    return totalitems;
+  }
   void NextScreen(){
    final s=<String>[];
     final p=<double>[];
@@ -71,7 +81,7 @@ setState(() {});
     
   Navigator.push(
               context,
-              MaterialPageRoute(builder: ( context) {return  Order(s: s,count: c,price: p,);}
+              MaterialPageRoute(builder: ( context) {return  Order(s: s,count: c,price: p,totalamount: total_amount,);}
               ),
             );
   }
@@ -190,7 +200,85 @@ setState(() {});
         
       ),
       
-       floatingActionButton:i!=0?FloatingActionButton.extended(onPressed:NextScreen, 
+       floatingActionButton:i!=0?FloatingActionButton.extended(onPressed:(){
+        showModalBottomSheet(isScrollControlled: true, context: context, builder: (BuildContext context){
+          return SizedBox(
+            height: 0.5* MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: DraggableScrollableSheet(builder: (context, scrollController){
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+              children:[
+                Expanded (
+                  //width: MediaQuery.of(context).size.width,
+
+                  //height:0.15* MediaQuery.of(context).size.height,
+                  flex: 2,
+                  child: 
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: prices.length,
+                itemBuilder: ( (BuildContext context, index) {
+                if(counter[index]!=0){
+                
+                return ListTile(title: Text(entries[index]),
+                trailing: buildText(prices[index], counter[index])
+                );
+                }
+                return const SizedBox();
+              } 
+              
+              ))),
+              const SizedBox(
+                
+              ),
+              Expanded(child:ListTile(title:const Text('subtotal'),
+              trailing: Text('$total_amount'),
+              )),
+              const SizedBox(
+               
+              ),
+              Expanded(child:ListTile(title: const Text('Tax 6%'),
+              trailing:buildText(total_amount/100, 6) ,
+              )),
+              Expanded(child:ListTile(title: const Text('Total Amount '),
+              trailing:buildText(total_amount+(total_amount*6/100), 1) ,
+              ))
+              
+              ]);
+            } ,)
+                      /*SingleChildScrollView(
+                      
+                        child: Expanded(child:  ListView.builder( 
+                          padding: const EdgeInsets.all(8),
+                          
+                          itemBuilder: (BuildContext context, int index){
+                            //if(counter[index]!=0) {
+                              return ListTile(
+                              title: Text(entries[index]),
+                            subtitle: Text('${prices[index]}\n ${description[index]}'),
+      
+                              isThreeLine: true,
+
+                              trailing: Text('${counter[index]}')
+                            );
+                            //}
+                          
+                          },
+                          
+                          
+                        ),
+                      ),
+                      ),*/
+                    
+              
+
+            
+          );
+        } );
+       }, 
       label:const Text('Order'),
       icon: const Icon(Icons.shopping_cart_checkout),
       ):null,
@@ -200,3 +288,10 @@ setState(() {});
  );    
   }
 }
+
+Text buildText(double x,int y){
+
+  double z = x*y;
+  z.toStringAsFixed(2);
+    return Text('$z');
+} 

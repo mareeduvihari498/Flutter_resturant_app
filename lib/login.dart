@@ -1,3 +1,7 @@
+/*
+Check if a number exists before sending sms
+add auth 
+*/
 import 'package:bawarchi/item.dart';
 import 'package:bawarchi/signup.dart';
 import 'package:flutter/material.dart';

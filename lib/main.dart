@@ -1,6 +1,6 @@
 /*
 Todo List
-Add a login page 
+check if the user is logged in or not
 Set firebase rules
 create a seperte admin screen
 
@@ -17,6 +17,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'firebase_options.dart';
 
 
+import 'item.dart';
 import 'signup.dart';
 //import 'Ico.dart';
 //import 'item.dart';
@@ -56,7 +57,9 @@ class _MyAppState extends State<MyApp> {
     return   MaterialApp(
       
         home:Scaffold(
-          body: Row(
+          body: Item()
+          
+          /*Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(child:Signup()),
@@ -65,7 +68,7 @@ class _MyAppState extends State<MyApp> {
                 ),
               Expanded(child:Login())
             ],
-          ),
+          ),*/
         ),
         /*routes:<String, WidgetBuilder>{
           'order': (BuildContext context) =>   const Order(s: '',),
