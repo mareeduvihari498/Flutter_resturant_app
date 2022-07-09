@@ -8,6 +8,7 @@ Push notification before a day when the changes have been made
 add a signout function
 */
 import 'dart:convert';
+import 'package:bawarchi/previous_orders.dart';
 import 'package:flutter/material.dart';
 import 'order.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -35,11 +36,14 @@ class _ItemState extends State<Item> {
     }
 
    Future<void>_trail() async{
+    print('called');
+
    await ref.child('items').child('item').once().then((DatabaseEvent snapshot){
-    
+    print(snapshot.snapshot.children);
      for (var element in snapshot.snapshot.children) {
        counter.add(0);
        var values = jsonDecode(jsonEncode(element.value));
+       print(values);
        entries.add(values['name']);
        prices.add(values['price']);
        description.add(values['description']);
@@ -52,7 +56,7 @@ class _ItemState extends State<Item> {
   
 
 setState(() {});
-   
+
     
   }
   int totalitems(){
@@ -112,7 +116,9 @@ setState(() {});
                 ListTile(
                   title:  const Text('Orders'),
                   onTap: (){
-
+                      Navigator.push(context, MaterialPageRoute(builder: ((context){
+                        return Previous_Orders();
+                      } )));
                   },
                 ),
                 ListTile(
@@ -137,10 +143,11 @@ setState(() {});
           ),
 
         ),
-        body:    ListView.builder(padding: const EdgeInsets.all(8),
+        body:   ListView.builder(padding: const EdgeInsets.all(8),
   itemCount: entries.length,
   itemBuilder: (BuildContext context, int index) {
     return   ListTile(
+      
       title: Text(entries[index]),
       subtitle: Text('${prices[index]}\n ${description[index]}'),
       

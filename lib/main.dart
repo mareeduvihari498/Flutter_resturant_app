@@ -19,6 +19,8 @@ import 'firebase_options.dart';
 
 import 'item.dart';
 import 'signup.dart';
+import 'web_item.dart';
+import 'admin.dart';
 //import 'Ico.dart';
 //import 'item.dart';
 /*
@@ -57,7 +59,7 @@ class _MyAppState extends State<MyApp> {
     return   MaterialApp(
       
         home:Scaffold(
-          body: Item()
+          body: Admin()
           
           /*Row(
             mainAxisSize: MainAxisSize.min,
