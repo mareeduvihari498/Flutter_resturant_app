@@ -7,6 +7,8 @@ create a seperte admin screen
 */
 
 import 'package:bawarchi/login.dart';
+import 'package:bawarchi/web_login.dart';
+import 'package:bawarchi/web_main.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 //import 'package:collection/collection.dart';
@@ -59,7 +61,7 @@ class _MyAppState extends State<MyApp> {
     return   MaterialApp(
       
         home:Scaffold(
-          body: Admin()
+          body: Webmain()
           
           /*Row(
             mainAxisSize: MainAxisSize.min,

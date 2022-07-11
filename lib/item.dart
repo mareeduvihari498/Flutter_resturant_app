@@ -31,18 +31,20 @@ class _ItemState extends State<Item> {
   late List<double> prices  ;
 
     Future<int> _newentree()async{
-      await ref.child('items').child('item').push().set({'name':'biryani','price':15.99,'description':'Falovured rice'});
+      await ref.child('items').child('entree').push().set({'name':'paneer entree','price':15.99,'description':'Falovured rice'});
       return 1;
     }
 
    Future<void>_trail() async{
-    print('called');
+   
+   
 
    await ref.child('items').child('item').once().then((DatabaseEvent snapshot){
-    print(snapshot.snapshot.children);
+    
      for (var element in snapshot.snapshot.children) {
+      
        counter.add(0);
-       var values = jsonDecode(jsonEncode(element.value));
+       var values = jsonDecode(jsonEncode(element.key));
        print(values);
        entries.add(values['name']);
        prices.add(values['price']);
@@ -99,6 +101,7 @@ setState(() {});
     prices=[];
     description=[];
     _trail();
+    _newentree();
   }
   Widget build(BuildContext context) {
    return  MaterialApp(
